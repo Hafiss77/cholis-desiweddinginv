@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://unpkg.com/bulma-tooltip@0.1.5/dist/bulma-tooltip.min.css" />
     <link rel="stylesheet" type="text/css" href="css/menikah.css" />
     <link rel="stylesheet" type="text/css" href="css/jquery.countdown.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script
       src="https://kit.fontawesome.com/2828f7885a.js"
       integrity="sha384-WAsFbnLEQcpCk8lM1UTWesAf5rGTCvb2Y+8LvyjAAcxK1c3s5c0L+SYOgxvc6PWG"
@@ -40,54 +41,9 @@
     <!-- Github Button -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
   </head>
-  <audio id="wedding-audio" loop preload="none">
-    <source src="audio/wedding-song.mp3" type="audio/mpeg">
-  </audio>
+
    
-  <!-- Tombol Mute mengambang -->
-  <button id="btn-mute" title="Mute / Unmute" style="
-    display: none;
-    position: fixed;
-    bottom: 24px; right: 24px;
-    z-index: 9999;
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: rgba(59, 43, 14, 0.85);
-    border: 1px solid #C9A96E;
-    color: #F5ECD7;
-    font-size: 1rem;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s;
-    backdrop-filter: blur(4px);
-  ">
-    <i class="fas fa-music" id="mute-icon"></i>
-  </button>
-   
-  <script>
-    // Lanjutkan musik dari cover.html
-    const audio    = document.getElementById('wedding-audio');
-    const btnMute  = document.getElementById('btn-mute');
-    const muteIcon = document.getElementById('mute-icon');
-   
-    if (sessionStorage.getItem('playMusic') === 'true') {
-      audio.volume = 0.6;
-      audio.play().catch(() => {});
-      btnMute.style.display = 'flex';
-    }
-   
-    // Tombol mute
-    let muted = false;
-    btnMute.addEventListener('click', function () {
-      muted = !muted;
-      audio.muted = muted;
-      muteIcon.className = muted ? 'fas fa-volume-mute' : 'fas fa-music';
-      btnMute.style.background = muted
-        ? 'rgba(100,100,100,0.85)'
-        : 'rgba(59, 43, 14, 0.85)';
-    });
-  </script>
+  
   <body>
     <!-- Begin Preloader -->
     <div class="preloader-wrapper">
@@ -96,6 +52,52 @@
       </div>
     </div>
     <!-- End Preloader-->
+    <!-- Audio -->
+    <audio id="wedding-audio" loop preload="auto">
+      <source src="audio/wedding-song.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Tombol Mute -->
+    <button id="btn-mute" title="Mute / Unmute" style="
+      position: fixed; bottom: 24px; right: 24px;
+      z-index: 9999; width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(59, 43, 14, 0.85);
+      border: 1px solid #C9A96E;
+      color: #F5ECD7; font-size: 1rem;
+      cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+    ">
+      <i class="fas fa-music" id="mute-icon"></i>
+    </button>
+
+    <script>
+      const audio    = document.getElementById('wedding-audio');
+      const btnMute  = document.getElementById('btn-mute');
+      const muteIcon = document.getElementById('mute-icon');
+
+      // Coba autoplay langsung
+      audio.volume = 0.6;
+      audio.play().catch(() => {
+        // Gagal (iPhone/Safari) — tunggu interaksi pertama user
+        const startOnTouch = () => {
+          audio.play().catch(() => {});
+          document.removeEventListener('touchstart', startOnTouch);
+          document.removeEventListener('click', startOnTouch);
+        };
+        document.addEventListener('touchstart', startOnTouch, { once: true });
+        document.addEventListener('click', startOnTouch, { once: true });
+      });
+
+      // Tombol mute
+      let muted = false;
+      btnMute.addEventListener('click', function () {
+        muted = !muted;
+        audio.muted = muted;
+        muteIcon.className = muted ? 'fas fa-volume-mute' : 'fas fa-music';
+      });
+    </script>
     <!-- Begin Header -->
     <div class="header-wrapper" id="home">
       <!-- Begin Hero -->

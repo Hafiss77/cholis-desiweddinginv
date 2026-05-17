@@ -205,10 +205,7 @@
 
 <body>
 
-  <!-- Audio -->
-  <audio id="wedding-audio" loop preload="none">
-    <source src="audio/wedding-song.mp3" type="audio/mpeg">
-  </audio>
+  
 
   <!-- Cover Page -->
   <div class="cover">
@@ -263,28 +260,6 @@
       document.getElementById('nama-tamu').textContent = decodeURIComponent(tamu);
     }
 
-    // ── Audio + navigasi ──
-    const audio    = document.getElementById('wedding-audio');
-    const btnOpen  = document.getElementById('btn-open');
-    const btnMute  = document.getElementById('btn-mute');
-    const muteIcon = document.getElementById('mute-icon');
-
-    btnOpen.addEventListener('click', function (e) {
-      // Putar musik saat tombol diklik (sebelum navigasi)
-      audio.volume = 0.6;
-      audio.play().catch(() => {}); // catch jika browser blokir
-
-      // Simpan state musik ke sessionStorage biar lanjut di index.html
-      sessionStorage.setItem('playMusic', 'true');
-    });
-
-    // ── Tombol Mute ──
-    let muted = false;
-    btnMute.addEventListener('click', function () {
-      muted = !muted;
-      audio.muted = muted;
-      muteIcon.className = muted ? 'fas fa-volume-mute' : 'fas fa-music';
-    });
   </script>
 
 </body>
